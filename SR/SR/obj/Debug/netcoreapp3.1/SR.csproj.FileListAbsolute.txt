@@ -1,0 +1,10 @@
+C:\Users\danii\source\repos\SR\SR\bin\Debug\netcoreapp3.1\SR.deps.json
+C:\Users\danii\source\repos\SR\SR\bin\Debug\netcoreapp3.1\SR.dll
+C:\Users\danii\source\repos\SR\SR\bin\Debug\netcoreapp3.1\SR.pdb
+C:\Users\danii\source\repos\SR\SR\obj\Debug\netcoreapp3.1\SR.csproj.AssemblyReference.cache
+C:\Users\danii\source\repos\SR\SR\obj\Debug\netcoreapp3.1\SR.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\danii\source\repos\SR\SR\obj\Debug\netcoreapp3.1\SR.AssemblyInfoInputs.cache
+C:\Users\danii\source\repos\SR\SR\obj\Debug\netcoreapp3.1\SR.AssemblyInfo.cs
+C:\Users\danii\source\repos\SR\SR\obj\Debug\netcoreapp3.1\SR.csproj.CoreCompileInputs.cache
+C:\Users\danii\source\repos\SR\SR\obj\Debug\netcoreapp3.1\SR.dll
+C:\Users\danii\source\repos\SR\SR\obj\Debug\netcoreapp3.1\SR.pdb
