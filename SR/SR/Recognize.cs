@@ -10,11 +10,24 @@ namespace SR
 
         }
 
-        public double[] Start(string fileName)
+        public string Start(string fileName)
         {
             reader = new Reader(fileName);
-            
-            return reader.Data;
+
+            double[] data = null;
+
+            string text = "";
+
+            while (!reader.isEmppty())
+            {
+                data = reader.Next();
+
+                text += LSTM(data);
+            }
+
+
+
+            return text;
         }
     }
 }
