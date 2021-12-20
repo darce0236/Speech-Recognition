@@ -6,8 +6,8 @@ namespace SR
 {
     class HammingWindow
     {
-        private double[] _data;
-        public HammingWindow(double[] data)
+        private float[] _data;
+        public HammingWindow(float[] data)
         {
             _data = data;
             CreateWindow();
@@ -17,9 +17,9 @@ namespace SR
         {
             double[] hamming = MathNet.Numerics.Window.Hamming(_data.Length);
             for (int i = 0; i < _data.Length; i++)
-                _data[i] *= hamming[i];
+                _data[i] *= (float)hamming[i];
         }
 
-        public double[] Data => _data;
+        public float[] Data => _data;
     }
 }

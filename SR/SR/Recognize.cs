@@ -10,7 +10,7 @@ namespace SR
 
         }
 
-        public double[] Start(string fileName)
+        public float[] Start(string fileName)
         {
             reader = new Reader(fileName);
             
