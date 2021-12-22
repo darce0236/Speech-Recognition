@@ -6,19 +6,8 @@ namespace SR
 {
     class FFT
     {
-        float[] data;
-
-        /**
-	 * number of points
-	 */
         protected int _numPoints;
-        /**
-         * real part
-         */
         private float[] _real;
-        /**
-         * imaginary part
-         */
         private float[] _imag;
 
         public FFT()
@@ -29,12 +18,11 @@ namespace SR
         public float[] Start(float[] data)
         {
             ComputeFft(data, 16);
-            float energy;
-            data = GetMagnitudeSquared(1, out energy);
+            data = GetMagnitudeSquared(1);
             return data;
         }
 
-        public static int ClosestPower(ulong x)
+        private static int ClosestPower(ulong x)
         {
             int power = 2;
 
@@ -46,52 +34,46 @@ namespace SR
             return power;
         }
 
-        public static bool IsPowerOfTwo(ulong x)
+        private int ComputeFft(float[] data, int numberOfCoefficients)
         {
-            return (x & (x - 1)) == 0;
-        }
-
-        public int ComputeFft(float[] signal, int numberOfCoefficients)
-        {
-            float[] x = signal;
-            if (!IsPowerOfTwo((uint)signal.Length))
+            float[] x = data;
+            if (!(((uint)data.Length & ((uint)data.Length - 1)) == 0))
             {
 
-                if (numberOfCoefficients < signal.Length)
+                if (numberOfCoefficients < data.Length)
                 {
-                    numberOfCoefficients = ClosestPower((uint)signal.Length);
+                    numberOfCoefficients = ClosestPower((uint)data.Length);
                 }
 
                 x = new float[numberOfCoefficients];
-                for (int index = 0; index < signal.Length; index++)
+                for (int index = 0; index < data.Length; index++)
                 {
-                    x[index] = signal[index];
+                    x[index] = data[index];
                 }
             }
 
-            signal = x;
+            data = x;
 
-            _numPoints = signal.Length;
-            // initialize real & imag array
+            _numPoints = data.Length;
+
             _real = new float[_numPoints];
             _imag = new float[_numPoints];
-            // move the N point signal into the real part of the complex DFT's time
-            // domain
-            _real = signal;
-            // set all of the samples in the imaginary part to zero
+
+            _real = data;
+
             for (int i = 0; i < _imag.Length; i++)
             {
                 _imag[i] = 0;
             }
-            // perform FFT using the real & imag array
+
             Fft();
             return numberOfCoefficients;
         }
 
-        public float[] GetMagnitudeSquared(int scale, out float energy)
+        private float[] GetMagnitudeSquared(int scale)
         {
             var ret = new float[_real.Length];
-            energy = 0.0f;
+            float energy = 0.0f;
 
             for (int index = 0; index < _real.Length; index++)
             {
@@ -110,14 +92,12 @@ namespace SR
             int halfNumPoints = _numPoints >> 1;
             int j = halfNumPoints;
 
-            // FFT time domain decomposition carried out by "bit reversal sorting"
-            // algorithm
+
             int k;
             for (int i = 1; i < _numPoints - 2; i++)
             {
                 if (i < j)
                 {
-                    // swap
                     float tempReal = _real[j];
                     float tempImag = _imag[j];
                     _real[j] = _real[i];
@@ -134,7 +114,6 @@ namespace SR
                 j += k;
             }
 
-            // loop for each stage
             for (int stage = 1; stage <= numStages; stage++)
             {
                 int LE = 1;
@@ -145,17 +124,16 @@ namespace SR
                 int LE2 = LE >> 1;
                 double UR = 1;
                 double UI = 0;
-                // calculate sine & cosine values
+
                 double SR = Math.Cos(pi / LE2);
                 double SI = -Math.Sin(pi / LE2);
-                // loop for each sub DFT
+
                 for (int subDFT = 1; subDFT <= LE2; subDFT++)
                 {
-                    // loop for each butterfly
                     for (int butterfly = subDFT - 1; butterfly <= _numPoints - 1; butterfly += LE)
                     {
                         int ip = butterfly + LE2;
-                        // butterfly calculation
+
                         float tempReal = _real[ip] * (float)UR - _imag[ip] * (float)UI;
                         float tempImag = _real[ip] * (float)UI + _imag[ip] * (float)UR;
                         _real[ip] = _real[butterfly] - tempReal;

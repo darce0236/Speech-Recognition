@@ -49,27 +49,23 @@ namespace SR
             if (isEmppty())
                 return null;
 
-            if (position + step >= Length)
+            if (position + step >= data.Length)
                 step = Length - position;
 
             float[] dataStep = new float[step];
 
             for (int i = 0; i < dataStep.Length; i++)
                 dataStep[i] = data[position + i];
-            
-            //HammingWindow hamming = new HammingWindow(dataStep);
 
             position += step;
 
-            //return hamming.Data;
             return dataStep;
         }
 
         public void Play(string fileName)
         {
             _reader = new WaveFileReader(fileName);
-            //WaveOutEvent player = new WaveOutEvent();
-            NAudio.Wave.DirectSoundOut sound = new DirectSoundOut();
+            DirectSoundOut sound = new DirectSoundOut();
             sound.Init(new WaveChannel32(_reader));
             sound.Play();
         }
