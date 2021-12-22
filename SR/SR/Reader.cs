@@ -17,7 +17,8 @@ namespace SR
             _reader = new WaveFileReader(fileName);
             _sampleRate = _reader.WaveFormat.SampleRate;
             _channels = _reader.WaveFormat.Channels;
-            _length = (int)(_reader.SampleCount / _channels);
+            //_length = (int)(_reader.SampleCount / _channels);
+            _length = ((int)_reader.Length - 44)/2;
             _wF = _reader.WaveFormat;
 
             Read();
@@ -32,7 +33,7 @@ namespace SR
             float i = 0;
 
             for (i = 0; i < data.Length; i++)
-                data[(int)i] = BitConverter.ToInt16(wave, 44 + (int)i * 2) / 65536.0f;
+                data[(int)i] = BitConverter.ToInt16(wave, 44 + (int)i * 2) / 32768.0f;
 
             position = 0;
             step = (int)(20.0 / (1000.0 / SampleRate));
