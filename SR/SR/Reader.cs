@@ -17,7 +17,7 @@ namespace SR
             _reader = new WaveFileReader(fileName);
             _sampleRate = _reader.WaveFormat.SampleRate;
             _channels = _reader.WaveFormat.Channels;
-            _length = (int)(_reader.SampleCount / _channels);
+            _length = (int)(_reader.SampleCount/_channels);
 
             Read();
         }
@@ -25,16 +25,16 @@ namespace SR
         public override void Read()
         {
             byte[] wave = new byte[_reader.Length];
-            data = new Double[(wave.Length - 44) / 2];
+            data = new float[(wave.Length-44) / 2];
             _reader.Read(wave, 0, Convert.ToInt32(_reader.Length));
 
             double i = 0;
 
             for (i = 0; i < data.Length; i++)
-                data[(int)i] = BitConverter.ToInt16(wave, 44 + (int)i * 2) / 65536.0;
+                data[(int)i] = BitConverter.ToInt16(wave, 44 + (int)i * 2) / 65536.0f;
 
             position = 0;
-            step = (int)(20.0 / (1000.0 / SampleRate));
+            step = (int)(20.0 * (_reader.WaveFormat.AverageBytesPerSecond/ 1000.0));
         }
 
         public bool isEmppty()
@@ -44,7 +44,7 @@ namespace SR
             return false;
         }
 
-        public double[] Next()
+        public float[] Next()
         {
             if (isEmppty())
                 return null;
@@ -52,7 +52,7 @@ namespace SR
             if (position + step >= Length)
                 step = Length - position;
 
-            double[] dataStep = new double[step];
+            float[] dataStep = new float[step];
 
             for (int i = 0; i < dataStep.Length; i++)
                 dataStep[i] = data[position + i];
@@ -77,7 +77,7 @@ namespace SR
         public int SampleRate => _sampleRate;
         public int Channels => _channels;
         public int Length => _length;
-        public double[] Data => data;
+        public float[] Data => data;
 
         public override void Reset(string fileName)
         {

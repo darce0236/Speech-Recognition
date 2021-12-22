@@ -5,7 +5,7 @@ namespace SR
     public class Recognize
     {
         private Reader reader;
-        private double[] dataStep;
+        private float[] dataStep;
 
         public Recognize()
         {
@@ -16,16 +16,19 @@ namespace SR
         {
             reader = new Reader(fileName);
 
-            double[] data = null;
+            float[] data = null;
 
             string text = "";
 
-           /* while (!reader.isEmppty())
+           while (!reader.isEmppty())
             {
                 data = reader.Next();
 
-                //text += LSTM(data);
-            }*/
+                HammingWindow hamming = new HammingWindow(data.Length);
+                data = hamming.Apply(data);
+
+                FFT fft = new FFT();
+            }
 
 
 
@@ -38,20 +41,28 @@ namespace SR
             reader.Play(fileName);
         }
 
-        public double[] TestRead()
+        public float[] TestRead()
         {
             return reader.Data;
         }
 
-        public double[] TestNext()
+        public float[] TestNext()
         {
             dataStep = reader.Next();
             return dataStep;
         }
-        public double[] TestHam()
+        public float[] TestHam()
         {
-            HammingWindow hammingWindow = new HammingWindow(dataStep);
-            return hammingWindow.Data;
+            HammingWindow hammingWindow = new HammingWindow(dataStep.Length);
+            dataStep = hammingWindow.Apply(dataStep);
+            return dataStep;
+        }
+
+        public float[] TestFFT()
+        {
+            FFT fft = new FFT();
+            dataStep = fft.Start(dataStep);
+            return dataStep;
         }
 
 
