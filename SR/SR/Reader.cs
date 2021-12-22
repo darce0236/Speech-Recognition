@@ -39,20 +39,22 @@ namespace SR
             step = (int)(20.0 / (1000.0 / SampleRate));
         }
 
-        public bool isEmppty()
+        public bool isEmpty()
         {
-            if (position >= Length)
+            if (position >= Length*Channels)
                 return true;
             return false;
         }
 
         public double[] Next()
         {
-            if (isEmppty())
+            if (isEmpty())
                 return null;
 
-            if (position + step >= Length)
-                step = Length - position;
+            if (position + step >= Length * Channels)
+                step = Length * Channels - position;
+
+            Console.WriteLine($"step = {step}\nposition = {position}");
 
             double[] dataStep = new double[step];
 
