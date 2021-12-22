@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using NAudio.Wave;
 
 namespace SR
 {
@@ -9,6 +10,7 @@ namespace SR
         public int _sampleRate { get; set; }
         public int _channels { get; set; }
         public int _length { get; set; }
+        public WaveFormat _wF { get; set; }
 
         public double[] data;
 
