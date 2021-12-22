@@ -4,7 +4,9 @@ namespace SR
 {
     public class Recognize
     {
-        Reader reader;
+        private Reader reader;
+        private double[] dataStep;
+
         public Recognize()
         {
 
@@ -18,16 +20,40 @@ namespace SR
 
             string text = "";
 
-            while (!reader.isEmppty())
+           /* while (!reader.isEmppty())
             {
                 data = reader.Next();
 
-                text += LSTM(data);
-            }
+                //text += LSTM(data);
+            }*/
 
 
 
             return text;
         }
+
+        public void Play(string fileName)
+        {
+            reader = new Reader(fileName);
+            reader.Play(fileName);
+        }
+
+        public double[] TestRead()
+        {
+            return reader.Data;
+        }
+
+        public double[] TestNext()
+        {
+            dataStep = reader.Next();
+            return dataStep;
+        }
+        public double[] TestHam()
+        {
+            HammingWindow hammingWindow = new HammingWindow(dataStep);
+            return hammingWindow.Data;
+        }
+
+
     }
 }

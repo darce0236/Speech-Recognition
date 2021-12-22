@@ -56,12 +56,22 @@ namespace SR
 
             for (int i = 0; i < dataStep.Length; i++)
                 dataStep[i] = data[position + i];
-
-            HammingWindow hamming = new HammingWindow(dataStep);
+            
+            //HammingWindow hamming = new HammingWindow(dataStep);
 
             position += step;
 
-            return hamming.Data;
+            //return hamming.Data;
+            return dataStep;
+        }
+
+        public void Play(string fileName)
+        {
+            _reader = new WaveFileReader(fileName);
+            //WaveOutEvent player = new WaveOutEvent();
+            NAudio.Wave.DirectSoundOut sound = new DirectSoundOut();
+            sound.Init(new WaveChannel32(_reader));
+            sound.Play();
         }
 
         public int SampleRate => _sampleRate;

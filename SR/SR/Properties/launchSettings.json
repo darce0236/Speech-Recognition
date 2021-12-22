@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "SR": {
+      "commandName": "Project",
+      "remoteDebugEnabled": false
+    }
+  }
+}
